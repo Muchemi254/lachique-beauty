@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "647232340855",
+    "firebase_url": "https://lachiq-beauties-default-rtdb.firebaseio.com",
+    "project_id": "lachiq-beauties",
+    "storage_bucket": "lachiq-beauties.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647232340855:android:a60fade91033532e5d9772",
+        "android_client_info": {
+          "package_name": "com.example.LachiqueBeauty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9HJQ1UL6HLnEtURBzhSQ-DP12nbKJz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647232340855:android:de62b5dd163789765d9772",
+        "android_client_info": {
+          "package_name": "com.example.hairsalonbookingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9HJQ1UL6HLnEtURBzhSQ-DP12nbKJz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647232340855:android:7fba9f8f1e3bfb505d9772",
+        "android_client_info": {
+          "package_name": "com.lachiqbeauties"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9HJQ1UL6HLnEtURBzhSQ-DP12nbKJz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647232340855-br8u61jnhpe9696973gmonbfhmvv90rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

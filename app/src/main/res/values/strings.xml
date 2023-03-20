@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">LachiqueBeauty</string>
+
+    //onboard screen
+
+    <string name="ob_header1">BOOK AN APPOINTMENT</string>
+    <string name="ob_header2">MEET OUR NAILIST</string>
+    <string name="ob_header3">CONFIRMATION</string>
+
+    <string name="ob_get_started">GET STARTED</string>
+
+    <string name="ob_desc1">User needs to book his slot inorder to have his Haircut .</string>
+    <string name="ob_desc2">Our service promises every viewServiceClass to fulfill their Dream look  .</string>
+    <string name="ob_desc3">Once an appointment is confirmed, Do Visit our Salon on Allotted Date.</string>
+
+
+    //appointment
+    <string-array name="Time">
+        <item>8:30</item>
+        <item>10:00</item>
+        <item>11:30</item>
+        <item>13:00</item>
+        <item>14:30</item>
+        <item>16:00</item>
+    </string-array>
+
+    <string name="date">Date of Booking :</string>
+    <string name="time">Time of Booking :</string>
+    <string name="nailist">Nailist Booked :</string>
+    <string name="service">Service Booked :</string>
+</resources>

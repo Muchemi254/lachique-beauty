@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="16sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#20000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Client Name:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="kim"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Service:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/serviceId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="kim"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Date:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dateId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="02-02-2022"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Nailist:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/nailist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="kim"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Time:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/timeId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="8:30"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Price:"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/priceId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="200"
+                android:layout_weight="1"
+                android:textSize="15dp"                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/completeApp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textSize="10dp"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="20sp"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/orange"
+                android:text="completed"/>
+            <Button
+                android:id="@+id/cancelID"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textSize="10dp"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="20sp"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/orange"
+                android:layout_gravity="center_horizontal"
+                android:text="cancel"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

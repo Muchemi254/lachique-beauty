@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/view_appointments"
+            android:title="View Appointments"
+            android:icon="@drawable/ic_baseline_event_note_24"
+            app:showAsAction="always"
+            />
+        <item
+            android:id="@+id/completed_appointments"
+            android:title="Completed Appointments"
+            android:icon="@drawable/ic_baseline_logout_24"
+            app:showAsAction="always"
+            />
+        <item
+        android:id="@+id/add_admin"
+        android:title="Add Admin"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_perm_phone_msg_24" />
+        <item
+            android:id="@+id/view_service"
+            android:title="View Services"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_baseline_power_settings_new_24" />
+        <item
+        android:id="@+id/view_admin"
+        android:title="View Admins"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_power_settings_new_24" />
+        <item
+        android:id="@+id/logout"
+        android:title="Log Out"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_power_settings_new_24" />
+
+    </menu>

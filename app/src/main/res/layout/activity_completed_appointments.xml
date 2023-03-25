@@ -102,7 +102,7 @@
                     android:id="@+id/NailistSelectedCommision"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center"
                     android:textSize="15dp"
                     android:textColor="@color/white"

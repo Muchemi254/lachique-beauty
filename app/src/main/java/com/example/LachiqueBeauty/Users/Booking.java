@@ -1,5 +1,7 @@
 package com.example.LachiqueBeauty.Users;
 
+import java.util.List;
+
 public class Booking {
 
     String id;

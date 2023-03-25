@@ -35,6 +35,7 @@ import com.example.LachiqueBeauty.Login;
 import com.example.LachiqueBeauty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,9 +44,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -58,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
+import java.util.Map;
 
 public class Appointment extends AppCompatActivity {
 
@@ -403,7 +407,7 @@ public class Appointment extends AppCompatActivity {
             map.put("price",price);
 
 
-            db.collection("Appointments").document(id).set(map)
+            db.collection("Appointments").document(id).set(map, SetOptions.merge())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -447,6 +451,7 @@ public class Appointment extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
+                String id = fAuth.getCurrentUser().getUid();
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 Calendar today = Calendar.getInstance();
                 int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -468,6 +473,28 @@ public class Appointment extends AppCompatActivity {
                     String dayOfWeekStr = new DateFormatSymbols().getWeekdays()[dayOfWeek];
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                     String date = simpleDateFormat.format(calendar.getTime());
+                    // save month to data base
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    CollectionReference usersRef = db.collection("Appointments");
+                    int selectedMonth = month + 1;
+
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("month", selectedMonth);
+                    updates.put("year", year);
+                    usersRef.document(id).set(updates, SetOptions.merge())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Field updated successfully
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Error updating field
+                                }
+                            });
+
                     date_in.setText(dayOfWeekStr + " " + date);
                 }
             }

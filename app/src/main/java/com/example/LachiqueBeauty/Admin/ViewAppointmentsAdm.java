@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +22,14 @@ import android.widget.Toast;
 
 import com.example.LachiqueBeauty.Login;
 import com.example.LachiqueBeauty.R;
-import com.example.LachiqueBeauty.Users.Home;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,18 +39,131 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ViewAppointmentsAdm extends AppCompatActivity {
     private String userId;
-    TextView countID;
-    private Button homebtn, logout, aboutus;
+    TextView countID, NailistSelected;
+    private Button homebtn, logout, aboutus, filterbtn, Datebtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_view_appointments_adm);
+        NailistSelected = findViewById(R.id.NailistSelected);
+
+        Datebtn = findViewById(R.id.DateSelectedId);
+
+
+        filterbtn = findViewById(R.id.filterID);
+        filterbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the dialog with a list of all nailists
+                showNailistDialog();
+            }
+
+            private void showNailistDialog() {
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("admin");
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<String> nailistNames = new ArrayList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String name = dataSnapshot.child("name").getValue(String.class).toLowerCase();
+                            nailistNames.add(name);
+                        }
+                        // Show the dialog with the list of nailists
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewAppointmentsAdm.this);
+                        builder.setTitle("Select Nailist");
+                        builder.setItems(nailistNames.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Update the query to retrieve documents for the selected nailist
+                                String selectedNailist = nailistNames.get(which);
+                                showDatePicker(selectedNailist);
+                                NailistSelected.setText(selectedNailist);
+                            }
+                        });
+                        builder.show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle any errors
+                    }
+                });
+            }
+
+            private void showDatePicker(String selectedNailist) {
+                // Get the current date
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                // Create a date formatter with the desired format
+                SimpleDateFormat sdf = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    sdf = new SimpleDateFormat("EEEE dd-MM-yyyy", Locale.getDefault());
+                }
+
+                // Create a date picker dialog with the formatted date
+                SimpleDateFormat finalSdf = sdf;
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ViewAppointmentsAdm.this,
+                        (view, yearSelected, monthSelected, dayOfMonthSelected) -> {
+                            // Convert the selected date to the desired format
+                            Calendar selectedCalendar = Calendar.getInstance();
+                            selectedCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
+                            String selectedDate = finalSdf.format(selectedCalendar.getTime());
+
+                            // Filter appointments by selected nailist and date
+                            filterByNailistAndDate(selectedNailist, selectedDate);
+                        },
+                        year, month, dayOfMonth);
+
+                // Show the date picker dialog
+                datePickerDialog.show();
+            }
+
+
+            private void filterByNailistAndDate(String nailistName, String selectedDate) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("Appointments")
+                        .whereEqualTo("nailist", nailistName.toLowerCase())
+                        .whereEqualTo("date", selectedDate);
+
+                // Get the documents and attach a listener
+                query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+
+                        // Set up the RecyclerView with the adapter
+                        RecyclerView recyclerView = findViewById(R.id.admin);
+                        recyclerView.setHasFixedSize(true);
+                        ViewAppointmentsAdapter adapter = new ViewAppointmentsAdapter(documents);
+                        recyclerView.setAdapter(adapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(layoutManager);
+
+                        int count = documents.size();
+                        // update TextView with count
+                        countID = findViewById(R.id.countID);
+                        countID.setText(String.valueOf(count));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+            }
+        });
+
 
         aboutus = findViewById(R.id.aboutUpdatebtn);
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -93,12 +211,6 @@ public class ViewAppointmentsAdm extends AppCompatActivity {
                 progressDialog.setMessage("Loading Appointments...");
                 progressDialog.show();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
                 Toast.makeText(getApplicationContext(), "Loading successful!!", Toast.LENGTH_LONG).show();
                 if (countID== null){
                     AlertDialog.Builder builder = new AlertDialog.Builder(ViewAppointmentsAdm.this);
@@ -120,6 +232,8 @@ public class ViewAppointmentsAdm extends AppCompatActivity {
                     alertDialog.show();
 
 
+                } else {
+                    progressDialog.dismiss();
                 }
             }
         });

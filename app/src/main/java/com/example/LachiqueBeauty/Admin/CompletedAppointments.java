@@ -12,11 +12,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -43,7 +40,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class CompletedAppointments extends AppCompatActivity {
     private String userId;
@@ -117,10 +113,35 @@ public class CompletedAppointments extends AppCompatActivity {
                         builder.setItems(nailistNames.toArray(new String[0]), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // Update the query to retrieve documents for the selected nailist
-                                String selectedNailist = nailistNames.get(which);
-                                filterByNailist(selectedNailist);
-                                NailistSelected.setText(selectedNailist);
+                                // Prompt the user to select a year
+                                final String[] years = {"2023", "2024", "2025", "2026", "2027", "2028"};
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CompletedAppointments.this);
+                                builder.setTitle("Select Year");
+                                builder.setItems(years, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whichYear) {
+                                        // Update the query to retrieve documents for the selected nailist and month
+                                        final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(CompletedAppointments.this);
+                                        builder.setTitle("Select Month");
+                                        builder.setItems(months, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int whichMonth) {
+                                                // Update the query to retrieve documents for the selected nailist and month
+                                                String selectedNailist = nailistNames.get(which);
+                                                String selectedYearStr = years[whichYear];
+                                                int selectedYear = Integer.parseInt(selectedYearStr);
+                                                // Months in Firestore are represented as integers from 1 to 12
+                                                // Prompt the user to select a month
+                                                int selectedMonth = whichMonth + 1; // Months in Firestore are represented as integers from 1 to 12
+                                                filterByNailist(selectedNailist,selectedYear, selectedMonth);
+                                                NailistSelected.setText(selectedNailist);
+                                            }
+                                        });
+                                        builder.show();
+                                    }
+                                });
+                                builder.show();
                             }
                         });
                         builder.show();
@@ -133,10 +154,12 @@ public class CompletedAppointments extends AppCompatActivity {
                 });
             }
 
-            private void filterByNailist(String nailistName) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                Query query = db.collection("CompletedAppointments").whereEqualTo("nailist", nailistName.toLowerCase());
 
+            private void filterByNailist(String nailistName, int year, int month) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("CompletedAppointments")
+                        .whereEqualTo("nailist", nailistName).whereEqualTo("year", year).whereEqualTo("month", month);
+                Toast.makeText(getApplicationContext(), "Loading successful!! " + month + year, Toast.LENGTH_LONG).show();
                 // Get the documents and attach a listener
                 query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -257,7 +280,7 @@ public class CompletedAppointments extends AppCompatActivity {
 
 
         //sort appointments by days
-        Query query = collectionRef.orderBy("myTimestamp", Query.Direction.DESCENDING);
+        Query query = collectionRef.orderBy("myTimestamp", Query.Direction.ASCENDING);
 
 
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

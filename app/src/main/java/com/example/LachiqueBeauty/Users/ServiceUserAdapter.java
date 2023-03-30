@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.LachiqueBeauty.Admin.ViewServiceAdmAdapter;
 import com.example.LachiqueBeauty.Admin.ViewServiceClass;
 import com.example.LachiqueBeauty.R;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,14 @@ public class ServiceUserAdapter extends RecyclerView.Adapter<ServiceUserAdapter.
     Context context;
     ArrayList<ViewServiceClass> list;
 
+    public interface OnItemClickListener {
+        void onButton1Click(int position);
+    }
+    private static ServiceUserAdapter.OnItemClickListener listener;
+    public void setOnItemClickListener(ServiceUserAdapter.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public ServiceUserAdapter(Context context, ArrayList<ViewServiceClass> list) {
         this.context = context;
         this.list = list;
@@ -33,13 +42,29 @@ public class ServiceUserAdapter extends RecyclerView.Adapter<ServiceUserAdapter.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView service, price;
-        Button book;
+        Button service_link;
+        private ServiceUserAdapter.OnItemClickListener mListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.service_image);
             service = itemView.findViewById(R.id.srvUserID);
             price = itemView.findViewById(R.id.prcUserID);
+            service_link = itemView.findViewById(R.id.button_service);
+            mListener = listener;
+
+            service_link.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onButton1Click(position);
+                        }
+                    }
+                }
+            });
+
         }
     }
 

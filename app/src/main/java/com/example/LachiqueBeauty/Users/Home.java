@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity {
 
-    Button btn1,btn2,btn3, logout, aboutus, settings;
+    Button btn1,btn2,btn3, logout, aboutus, settingsbtn;
     private FirebaseAuth fAuth;
 
     @Override
@@ -32,9 +32,24 @@ public class Home extends AppCompatActivity {
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
         logout = findViewById(R.id.logoutbtn);
-
-
+        aboutus = findViewById(R.id.aboutbtn);
+        settingsbtn = findViewById(R.id.settingsbtn);
         fAuth = FirebaseAuth.getInstance();
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, SettingsUser.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, AboutUsers.class);
+                startActivity(intent);
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

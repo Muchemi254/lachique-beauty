@@ -33,28 +33,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="bottom"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:gravity="start"
                     android:layout_marginLeft="8dp"
-                    android:layout_weight="2"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     android:text="Service: "/>
                 <TextView
                     android:id="@+id/srvUserID"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_weight="1"
                     android:textSize="14dp"
                     android:textColor="@color/white"
                     android:text="service"
@@ -65,22 +63,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:gravity="start"
                     android:layout_marginLeft="8dp"
-                    android:layout_weight="2"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:text="Price: "/>
                 <TextView
                     android:id="@+id/prcUserID"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textAllCaps="true"
-                    android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:text="200"/>
@@ -103,6 +99,11 @@
              -->
 
         </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0000"
+            android:id="@+id/button_service"/>
 
 
 

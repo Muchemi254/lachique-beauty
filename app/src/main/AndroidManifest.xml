@@ -18,6 +18,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LachiqueBeauty">
         <activity
+            android:name=".Users.SettingsUser"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Users.AboutUsers"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Admin.AboutUsUpdate"
             android:exported="false">
             <meta-data

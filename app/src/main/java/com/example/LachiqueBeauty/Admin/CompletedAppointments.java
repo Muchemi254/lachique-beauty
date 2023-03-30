@@ -44,7 +44,9 @@ import java.util.List;
 public class CompletedAppointments extends AppCompatActivity {
     private String userId;
     Button filterbtn;
-    TextView countID, totalprice, NailistSelected, NailistCommission;
+    ProgressDialog progressDialog;
+    TextView countID, totalprice, NailistSelected, NailistCommission, MonthSelected, ViewAllbtn;
+
     private Button homebtn, logout, aboutus;
 
     @Override
@@ -52,13 +54,24 @@ public class CompletedAppointments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_completed_appointments);
 
-        ProgressDialog progressDialog = new ProgressDialog(CompletedAppointments.this);
+
+        getdocuments();
+
+        progressDialog = new ProgressDialog(CompletedAppointments.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Appointments...");
         progressDialog.show();
 
         NailistSelected = findViewById(R.id.NailistSelected);
         NailistCommission = findViewById(R.id.NailistSelectedCommision);
+        MonthSelected = findViewById(R.id.MonthIDSelect);
+        ViewAllbtn = findViewById(R.id.ViewAllID);
+        ViewAllbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getdocuments();
+            }
+        });
 
         aboutus = findViewById(R.id.aboutUpdatebtn);
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +148,12 @@ public class CompletedAppointments extends AppCompatActivity {
                                                 // Prompt the user to select a month
                                                 int selectedMonth = whichMonth + 1; // Months in Firestore are represented as integers from 1 to 12
                                                 filterByNailist(selectedNailist,selectedYear, selectedMonth);
+                                                String MonthStr = months[whichMonth];
+                                                NailistSelected.setVisibility(View.VISIBLE);
+                                                MonthSelected.setVisibility(View.VISIBLE);
                                                 NailistSelected.setText(selectedNailist);
+                                                MonthSelected.setText(MonthStr);
+
                                             }
                                         });
                                         builder.show();
@@ -185,7 +203,8 @@ public class CompletedAppointments extends AppCompatActivity {
 
                         TextView totalprice = findViewById(R.id.totalAmountID);
                         totalprice.setText(String.valueOf(sum));
-                        NailistCommission.setText("Commission:  " + String.valueOf(commission));
+                        NailistCommission.setVisibility(View.VISIBLE);
+                        NailistCommission.setText(String.valueOf(commission));
 
                         int count = documents.size();
                         // update TextView with count
@@ -199,13 +218,15 @@ public class CompletedAppointments extends AppCompatActivity {
                     }
                 });
             }
-
-
-
-
             });
 
 
+
+
+
+    }
+
+    private void getdocuments() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionRef = db.collection("CompletedAppointments");
@@ -246,6 +267,9 @@ public class CompletedAppointments extends AppCompatActivity {
                 // update TextView with count
                 countID = findViewById(R.id.countID);
                 countID.setText(String.valueOf(count));
+                NailistCommission.setVisibility(View.GONE);
+                NailistSelected.setVisibility(View.GONE);
+                MonthSelected.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), "Loading successful!!", Toast.LENGTH_LONG).show();
                 if (countID== null){
                     progressDialog.dismiss();
@@ -273,16 +297,8 @@ public class CompletedAppointments extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-
-
         //sort appointments by days
         Query query = collectionRef.orderBy("myTimestamp", Query.Direction.ASCENDING);
-
-
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

@@ -32,44 +32,44 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="18dp"
+                    android:layout_weight="11"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:gravity="center"
-                    android:text="Total Completed Appointments:" />
+                    android:text="Completed Appointments:" />
                 <TextView
                     android:id="@+id/countID"
                     android:text="0"
+                    android:background="@drawable/border"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="13"
                     android:textColor="@color/white"
                     android:gravity="center"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="#80000000">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="18dp"
+                    android:layout_weight="13"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:gravity="center"
                     android:text="Total Amount:" />
                 <TextView
                     android:id="@+id/totalAmountID"
                     android:text="0"
+                    android:background="@drawable/border"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="10"
                     android:textColor="@color/white"
                     android:gravity="center"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,15 +78,65 @@
                 android:orientation="horizontal">
                 <Button
                     android:id="@+id/filterID"
-                    android:text="Filter by Nailist"
+                    android:text="Filter by"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textAllCaps="false"
                     android:layout_weight="2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/ic_baseline_menu_24"
                     android:gravity="center"
                     android:padding="2dp"
-                    android:textSize="14dp"
+                    android:textSize="10dp"
+                    android:backgroundTint="@color/orange"
+                    app:tint="@color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="Nailist"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="Commission"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:text="Month"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#80000000"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/ViewAllID"
+                    android:text="reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAllCaps="false"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_baseline_menu_24"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textSize="10dp"
                     android:backgroundTint="@color/orange"
                     app:tint="@color/black" />
                 <TextView
@@ -94,7 +144,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/border"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:text="  "/>
@@ -103,8 +156,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:background="@drawable/border"
                     android:gravity="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/white"
+                    android:text="  "/>
+                <TextView
+                    android:id="@+id/MonthIDSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:textColor="@color/white"
                     android:text="  "/>
             </LinearLayout>

@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignUp extends AppCompatActivity {
     //Variables
     TextInputLayout regName, regUsername, regEmail, regPhoneNo, regPassword;
@@ -88,49 +91,70 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter password!!",Toast.LENGTH_LONG).show();
             return;
         }
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+        Matcher matcher = pattern.matcher(password);
+
+        if (matcher.matches()) {
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+
+                        Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+
+                        // save data into database
+                        savedata();
+
+
+                        // if the user created intent to login activity
+
+                        Intent intent = new Intent(SignUp.this, Login.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        // Registration failed
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+
+                        // Set the message show for the Alert time
+                        builder.setMessage(task.getException().getMessage());
+
+                        // Set Alert Title
+                        builder.setTitle("Login Failed");
+
+                        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                        builder.setCancelable(true);
+
+
+                        // Create the Alert dialog
+                        AlertDialog alertDialog = builder.create();
+                        // Show the Alert Dialog box
+                        alertDialog.show();
+                    }
+                }
+            });
+
+            // Password meets the requirements
+        } else {
+
+            // Password does not meet the requirements
+            // Show an error message to the user
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error")
+                    .setMessage("Password must be at least 8 characters long and contain at least one digit, one letter, and one special character")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Do nothing, just close the dialog
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
 
         
         // validate if user exists
         // create new user or register new user
-            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-
-                                Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-
-                                // save data into database
-                                savedata();
-
-
-                                // if the user created intent to login activity
-
-                                Intent intent = new Intent(SignUp.this, Login.class);
-                                startActivity(intent);
-                                finish();
-
-                            } else {
-                                // Registration failed
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-
-                                // Set the message show for the Alert time
-                                builder.setMessage(task.getException().getMessage());
-
-                                // Set Alert Title
-                                builder.setTitle("Login Failed");
-
-                                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                                builder.setCancelable(true);
-
-
-                                // Create the Alert dialog
-                                AlertDialog alertDialog = builder.create();
-                                // Show the Alert Dialog box
-                                alertDialog.show();
-                            }
-                        }
-                    });
 
 
     }

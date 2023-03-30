@@ -60,15 +60,15 @@
             android:orientation="horizontal">
             <Button
                 android:id="@+id/filterID"
-                android:text="Filter by Nailist"
+                android:text="Filter by Day"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAllCaps="false"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:src="@drawable/ic_baseline_menu_24"
                 android:gravity="center"
                 android:padding="2dp"
-                android:textSize="14dp"
+                android:textSize="12dp"
                 android:backgroundTint="@color/orange"
                 app:tint="@color/black" />
             <TextView
@@ -88,19 +88,19 @@
             android:orientation="horizontal">
             <Button
                 android:id="@+id/DateSelectedId"
-                android:text="Filter by Date"
+                android:text="Filter by months"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAllCaps="false"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:src="@drawable/ic_baseline_menu_24"
                 android:gravity="center"
                 android:padding="2dp"
-                android:textSize="14dp"
+                android:textSize="12dp"
                 android:backgroundTint="@color/orange"
                 app:tint="@color/black" />
             <TextView
-                android:id="@+id/ii"
+                android:id="@+id/monthID"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"

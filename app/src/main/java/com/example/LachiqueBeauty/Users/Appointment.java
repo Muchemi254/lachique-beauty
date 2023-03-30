@@ -70,7 +70,7 @@ public class Appointment extends AppCompatActivity {
     Spinner spinnerNailist;
     Spinner spinnerService;
     Spinner spinnerTime;
-    Button btnInsertData,buttonTime, logout;
+    Button btnInsertData,buttonTime, logout,  aboutus,settingsbtn;
     FirebaseAuth fAuth;
 
     private FirebaseFirestore db;
@@ -83,6 +83,28 @@ public class Appointment extends AppCompatActivity {
 
 
         logout = findViewById(R.id.logoutbtn);
+        aboutus = findViewById(R.id.aboutbtn);
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Appointment.this, AboutUsers.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+        settingsbtn = findViewById(R.id.settingsbtn);
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Appointment.this, SettingsUser.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+            }
+        });
 
 
         fAuth = FirebaseAuth.getInstance();

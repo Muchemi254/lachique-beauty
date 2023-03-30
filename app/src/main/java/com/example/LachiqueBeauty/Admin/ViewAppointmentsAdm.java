@@ -45,7 +45,7 @@ import java.util.Locale;
 
 public class ViewAppointmentsAdm extends AppCompatActivity {
     private String userId;
-    TextView countID, NailistSelected;
+    TextView countID, NailistSelected, monthSelected;
     private Button homebtn, logout, aboutus, filterbtn, Datebtn;
 
 
@@ -54,8 +54,112 @@ public class ViewAppointmentsAdm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_appointments_adm);
         NailistSelected = findViewById(R.id.NailistSelected);
+        monthSelected = findViewById(R.id.monthID);
 
         Datebtn = findViewById(R.id.DateSelectedId);
+        Datebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the dialog with a list of all nailists
+                showNailistDialog();
+            }
+
+            private void showNailistDialog() {
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("admin");
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<String> nailistNames = new ArrayList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String name = dataSnapshot.child("name").getValue(String.class).toLowerCase();
+                            nailistNames.add(name);
+                        }
+                        // Show the dialog with the list of nailists
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewAppointmentsAdm.this);
+                        builder.setTitle("Select Nailist");
+                        builder.setItems(nailistNames.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Prompt the user to select a year
+                                final String[] years = {"2023", "2024", "2025", "2026", "2027", "2028"};
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ViewAppointmentsAdm.this);
+                                builder.setTitle("Select Year");
+                                builder.setItems(years, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whichYear) {
+                                        // Update the query to retrieve documents for the selected nailist and month
+                                        final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewAppointmentsAdm.this);
+                                        builder.setTitle("Select Month");
+                                        builder.setItems(months, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int whichMonth) {
+                                                // Update the query to retrieve documents for the selected nailist and month
+                                                String selectedNailist = nailistNames.get(which);
+                                                String selectedYearStr = years[whichYear];
+                                                int selectedYear = Integer.parseInt(selectedYearStr);
+                                                // Months in Firestore are represented as integers from 1 to 12
+                                                // Prompt the user to select a month
+                                                int selectedMonth = whichMonth + 1; // Months in Firestore are represented as integers from 1 to 12
+                                                String monthstr = months[whichMonth];
+                                                filterByNailist(selectedNailist,selectedYear, selectedMonth);
+                                                NailistSelected.setText(selectedNailist);
+                                                monthSelected.setText(monthstr);
+                                            }
+                                        });
+                                        builder.show();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        });
+                        builder.show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle any errors
+                    }
+                });
+            }
+
+
+            private void filterByNailist(String nailistName, int year, int month) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("Appointments")
+                        .whereEqualTo("nailist", nailistName).whereEqualTo("year", year).whereEqualTo("month", month);
+                Toast.makeText(getApplicationContext(), "Loading successful!! " + month + year, Toast.LENGTH_LONG).show();
+                // Get the documents and attach a listener
+                query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+
+                        // Set up the RecyclerView with the adapter
+                        RecyclerView recyclerView = findViewById(R.id.admin);
+                        recyclerView.setHasFixedSize(true);
+                        CompletedAppointmentAdapter adapter = new CompletedAppointmentAdapter(documents);
+                        recyclerView.setAdapter(adapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(layoutManager);
+
+                        int count = documents.size();
+                        // update TextView with count
+                        countID = findViewById(R.id.countID);
+                        countID.setText(String.valueOf(count));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+            }
+
+
+
+
+        });
 
 
         filterbtn = findViewById(R.id.filterID);
@@ -118,7 +222,10 @@ public class ViewAppointmentsAdm extends AppCompatActivity {
                             // Convert the selected date to the desired format
                             Calendar selectedCalendar = Calendar.getInstance();
                             selectedCalendar.set(yearSelected, monthSelected, dayOfMonthSelected);
-                            String selectedDate = finalSdf.format(selectedCalendar.getTime());
+                            String selectedDate = null;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                selectedDate = finalSdf.format(selectedCalendar.getTime());
+                            }
 
                             // Filter appointments by selected nailist and date
                             filterByNailistAndDate(selectedNailist, selectedDate);

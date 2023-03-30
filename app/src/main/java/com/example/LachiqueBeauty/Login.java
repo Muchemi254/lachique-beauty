@@ -1,13 +1,17 @@
 package com.example.LachiqueBeauty;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import com.example.LachiqueBeauty.Admin.AdminHome;
 import com.example.LachiqueBeauty.Users.Home;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +40,7 @@ public class Login extends AppCompatActivity {
 
     private EditText emailTextView, passwordTextView;
     private Button Btn;
-    private TextView regHere;
+    private TextView regHere, forgetpass;
     private ProgressBar progressbar;
     FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -75,6 +80,16 @@ public class Login extends AppCompatActivity {
         regHere = findViewById(R.id.regHere);
         progressbar = findViewById(R.id.progressBar);
 
+        forgetpass=findViewById(R.id.forgetpass);
+
+        // click on forget password text
+        forgetpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRecoverPasswordDialog();
+            }
+        });
+
 
         //redirect to register
         regHere.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +113,70 @@ public class Login extends AppCompatActivity {
 
     }
 
+    private void showRecoverPasswordDialog() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Recover Password");
+        LinearLayout linearLayout=new LinearLayout(this);
+        final EditText emailet= new EditText(this);
+
+        // write the email using which you registered
+        emailet.setText("Email");
+        emailet.setMinEms(16);
+        emailet.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        linearLayout.addView(emailet);
+        linearLayout.setPadding(10,10,10,10);
+        builder.setView(linearLayout);
+
+        // Click on Recover and a email will be sent to your registered email id
+        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String email=emailet.getText().toString().trim();
+                beginRecovery(email);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+    ProgressDialog loadingBar;
+
+    private void beginRecovery(String email) {
+        loadingBar=new ProgressDialog(this);
+        loadingBar.setMessage("Sending Email....");
+        loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar.show();
+
+        // calling sendPasswordResetEmail
+        // open your email and write the new
+        // password and then you can login
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                loadingBar.dismiss();
+                if(task.isSuccessful())
+                {
+                    // if isSuccessful then done message will be shown
+                    // and you can change the password
+                    Toast.makeText(Login.this,"Done sent, Check your email to reset your password",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(Login.this,"Error Occurred",Toast.LENGTH_LONG).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loadingBar.dismiss();
+                Toast.makeText(Login.this,"Error Failed",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
     private void loginUserAccount()

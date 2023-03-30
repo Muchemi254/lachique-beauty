@@ -24,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.LachiqueBeauty.Admin.ViewServiceAdmAdapter;
 import com.example.LachiqueBeauty.Admin.ViewServiceClass;
 import com.example.LachiqueBeauty.Login;
 import com.example.LachiqueBeauty.R;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 public class Services extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    private Button logout;
+    private Button logout, aboutus,settingsbtn;
     DatabaseReference databaseReference;
     ServiceUserAdapter ServiceUserAdapter;
     ArrayList<ViewServiceClass> list;
@@ -54,6 +55,28 @@ public class Services extends AppCompatActivity {
         setContentView(R.layout.activity_services);
 
         logout = findViewById(R.id.logoutbtn);
+        settingsbtn = findViewById(R.id.settingsbtn);
+        aboutus = findViewById(R.id.aboutbtn);
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Services.this, SettingsUser.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Services.this, AboutUsers.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+            }
+        });
 
 
         fAuth = FirebaseAuth.getInstance();
@@ -81,6 +104,18 @@ public class Services extends AppCompatActivity {
         ServiceUserAdapter = new ServiceUserAdapter(this,list);
 
         recyclerView.setAdapter(ServiceUserAdapter);
+
+        ServiceUserAdapter.setOnItemClickListener(new ServiceUserAdapter.OnItemClickListener() {
+            @Override
+            public void onButton1Click(int position) {
+                Intent intent = new Intent(Services.this, Appointment.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+
+
 
 
 

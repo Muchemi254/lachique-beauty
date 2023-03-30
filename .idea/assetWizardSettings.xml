@@ -331,7 +331,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../apps/SDK/icons/material/materialicons/image/baseline_image_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../apps/SDK/icons/material/materialiconssharp/person_2/sharp_person_2_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -341,7 +341,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_image_24" />
+                            <entry key="outputName" value="ic_sharp_person_2_24" />
                             <entry key="sourceFile" value="D:\The-Barbarians" />
                           </map>
                         </option>

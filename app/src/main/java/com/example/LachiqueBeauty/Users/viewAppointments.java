@@ -45,7 +45,7 @@ public class viewAppointments extends AppCompatActivity {
     private FirebaseFirestore db;
     private MyAdapter adapter;
     private List<Booking> list;
-    private Button cancelAppointment, logout;
+    private Button cancelAppointment, logout, settingsbtn;
     private TextView emptyView;
     FirebaseAuth fAuth;
 
@@ -56,6 +56,14 @@ public class viewAppointments extends AppCompatActivity {
         setContentView(R.layout.activity_view_appointment_user);
 
         logout = findViewById(R.id.logoutbtn);
+        settingsbtn = findViewById(R.id.settingsbtn);
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(viewAppointments.this, SettingsUser.class);
+                startActivity(intent);
+            }
+        });
 
 
         fAuth = FirebaseAuth.getInstance();
